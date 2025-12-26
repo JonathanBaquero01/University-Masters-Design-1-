@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Masters - Ayuda Académica Profesional</title>
+    <style>
+        /* 
+         * RESET & BASIC SETUP 
+         */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --bg-color: #050505; /* Black background as requested */
+            --card-bg: #111111;
+            --primary-color: #ffd700; /* Gold for "Masters" feel */
+            --text-color: #ffffff;
+            --text-secondary: #aaaaaa;
+            --accent-blue: #007bff;
+        }
+
+        body {
+            position: relative; /* Clave para que el sello se posicione al final del documento */
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding-bottom: 20px; /* Espacio extra al final para el sello */
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: 0.3s;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* 
+         * UTILITIES 
+         */
+        .container {
+            /* Aumentado para pantallas grandes */
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            /* Tipografía fluida: Mínimo 2rem, ideal 4vw, Máximo 3.5rem */
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background-color: var(--primary-color);
+            color: #000;
+            font-weight: bold;
+            border-radius: 5px;
+            border: 2px solid var(--primary-color);
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        /* 
+         * HEADER & NAV 
+         */
+        header {
+            background-color: rgba(0, 0, 0, 0.95);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #333;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px; /* Espacio entre imagen y texto */
+        }
+
+        .logo img {
+            height: 50px; /* Tamaño optimizado para header */
+            width: auto;
+        }
+
+        .logo span {
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            /* Aplicando el mismo degradado que el H1 del Hero */
+            background: -webkit-linear-gradient(var(--primary-color), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: var(--primary-color); /* Fallback */
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            font-size: 1.1rem;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            bottom: -5px;
+            left: 0;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+
+        /* 
+         * HERO SECTION 
+         */
+        #hero {
+            /* Padding fluido */
+            padding-top: clamp(120px, 15vh, 180px);
+            padding-bottom: clamp(60px, 10vh, 100px);
+            min-height: 90vh; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-text h1 {
+            /* Tipografía grande y fluida */
+            font-size: clamp(2.5rem, 5vw, 4.5rem); 
+            line-height: 1.1;
+            margin-bottom: 25px;
+            background: -webkit-linear-gradient(var(--primary-color), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text p {
+            font-size: clamp(1rem, 1.2vw, 1.25rem);
+            margin-bottom: 20px;
+        }
+
+        .hero-text p.quote {
+            font-style: italic;
+            color: var(--text-secondary);
+            border-left: 3px solid var(--primary-color);
+            padding-left: 15px;
+            margin-bottom: 30px;
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-image img {
+            border-radius: 10px;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.15);
+            max-height: 450px; /* Permitimos que sea más grande en pantallas grandes */
+            width: auto;
+        }
+
+        /* 
+         * GENERIC SECTION STYLES 
+         */
+        section {
+            padding: clamp(60px, 8vh, 100px) 0;
+        }
+
+        /* 
+         * SERVICES (Dibujos) 
+         */
+        #services {
+            background-color: #0a0a0a;
+        }
+
+        .drawings-grid {
+            display: none; 
+        }
+
+        /* Services Text List Styles */
+        .services-text-list {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .service-box {
+            background: linear-gradient(145deg, #111, #0a0a0a);
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 40px;
+            flex: 1;
+            /* Ajustado para pantallas grandes y pequeñas */
+            min-width: 320px;
+            max-width: 600px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: transform 0.3s, border-color 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .service-box:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+
+        .service-box img.box-icon {
+            width: 180px; /* Iconos más grandes */
+            height: auto;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 0 10px rgba(255,215,0,0.2));
+        }
+
+        .service-box h3 {
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            width: 100%;
+        }
+
+        .styled-list {
+            width: 100%;
+            text-align: left;
+        }
+
+        .styled-list li {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            color: #ccc;
+            transition: color 0.3s;
+            background: rgba(255,255,255,0.03);
+            padding: 12px 20px;
+            border-radius: 8px;
+        }
+
+        .styled-list li:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .styled-list li .icon {
+            font-size: 1.6rem;
+            margin-right: 15px;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        /* 
+         * TESTIMONIALS (Chats)
+         */
+        #testimonials {
+            background-color: #000;
+        }
+
+        .chat-gallery {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px;
+            flex-wrap: nowrap; 
+        }
+
+        .chat-item {
+            flex: 1; 
+            border: 1px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            max-width: 400px; /* Permitir chats más anchos en pantallas grandes */
+        }
+
+        .chat-item:hover {
+            transform: scale(1.02);
+            z-index: 2;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* 
+         * READY TO START SECTION 
+         */
+        #ready {
+            background: linear-gradient(180deg, #000 0%, #0c0c0c 100%);
+        }
+
+        .steps-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .step-card {
+            background-color: var(--card-bg);
+            padding: 50px 30px;
+            border-radius: 15px;
+            text-align: center;
+            flex: 1;
+            min-width: 280px;
+            max-width: 400px; /* Más ancho para desktop */
+            border: 1px solid #333;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .step-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-color);
+        }
+
+        .step-icon {
+            width: 70px;
+            height: 70px;
+            background-color: var(--primary-color);
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 0 auto 25px auto;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .step-card h3 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .step-card p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* 
+         * CONTACT & FOOTER 
+         */
+        #contact {
+            background: linear-gradient(to top, #111, #000);
+            text-align: center;
+        }
+
+        .social-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .social-icon img {
+            width: 60px;
+            height: 60px;
+            transition: transform 0.3s;
+        }
+
+        .social-icon:hover img {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        .whatsapp-section {
+            margin-top: 20px;
+            background-color: #1a1a1a;
+            padding: 50px;
+            border-radius: 15px;
+            display: inline-block;
+            border: 1px solid #333;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .whatsapp-section h3 {
+            margin-bottom: 40px;
+            color: #fff;
+            font-size: 2rem;
+        }
+
+        .whatsapp-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .wa-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            background-color: #075e54;
+            padding: 20px 40px;
+            border-radius: 50px;
+            color: white;
+            transition: 0.3s;
+            border: 2px solid transparent;
+            min-width: 300px;
+        }
+
+        .wa-btn:hover {
+            background-color: #128c7e;
+            border-color: #25d366;
+        }
+
+        .wa-btn img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .wa-info {
+            text-align: left;
+        }
+
+        .wa-info strong {
+            display: block;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            background-color: #000;
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid #222;
+            color: #666;
+            font-size: 1rem;
+            /* Padding bottom extra para que el sello no tape el texto en pantallas pequeñas */
+            padding-bottom: 80px; 
+        }
+
+        /* 
+         * QUALITY SEAL (STATIC AT BOTTOM)
+         */
+        #quality-seal {
+            position: absolute; 
+            bottom: 20px;
+            right: 20px;
+            width: 120px; /* Un poco más grande en desktop */
+            height: auto;
+            z-index: 10;
+            pointer-events: none; /* Permite hacer clic a través si es necesario */
+        }
+        
+        /* 
+         * RESPONSIVE MEDIA QUERIES 
+         */
+        
+        /* Tablets y Laptops Pequeñas (max 1024px) */
+        @media (max-width: 1024px) {
+            .chat-gallery {
+                gap: 15px;
+            }
+        }
+
+        /* Tablets y Móviles Grandes (max 900px) */
+        @media (max-width: 900px) {
+            #hero {
+                padding-top: 120px;
+                min-height: auto;
+            }
+
+            .hero-content {
+                flex-direction: column-reverse; /* Imagen arriba texto abajo en movil */
+                text-align: center;
+                gap: 40px;
+            }
+
+            .hero-text p.quote {
+                text-align: center;
+                border-left: none;
+                border-top: 3px solid var(--primary-color);
+                padding-top: 20px;
+                padding-left: 0;
+            }
+
+            /* Chats se apilan verticalmente */
+            .chat-gallery {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .chat-item {
+                width: 100%;
+                max-width: 500px; /* Más anchos en móvil para leer mejor */
+                margin-bottom: 20px;
+            }
+            
+            .whatsapp-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .wa-btn {
+                width: 100%;
+            }
+        }
+
+        /* Móviles (max 768px) */
+        @media (max-width: 768px) {
+            section {
+                padding: 50px 0; /* Padding reducido en movil */
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: rgba(0,0,0,0.98);
+                padding: 20px;
+                text-align: center;
+                border-bottom: 1px solid #333;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            /* Ajustar sello en moviles */
+            #quality-seal {
+                width: 70px; /* Más pequeño para no estorbar */
+                bottom: 10px;
+                right: 10px;
+            }
+
+            .services-text-list {
+                flex-direction: column;
+                align-items: center;
+            }
+            .service-box {
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .step-card {
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .hero-image img {
+                max-height: 300px;
+            }
+        }
+
+        /* Móviles Pequeños (max 480px) */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+            footer {
+                padding-bottom: 60px; /* Espacio justo para el sello pequeño */
+            }
+
+            /* Ajustar texto del logo en pantallas muy pequeñas */
+            .logo span {
+                font-size: 1rem;
+            }
+            .logo img {
+                height: 35px;
+            }
+            
+            .wa-btn {
+                padding: 15px 20px;
+                min-width: auto;
+                width: 100%;
+            }
+        }
+    </style>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <img src="https://i.ibb.co/Z1G0SkLj/Logo.png" alt="University Masters Logo">
+                <span>University Masters</span>
+            </a>
+            <div class="mobile-menu-btn" id="mobileMenuBtn">☰</div>
+            <nav class="nav-links" id="navLinks">
+                <a href="#hero">Inicio</a>
+                <a href="#services">Servicios</a>
+                <a href="#testimonials">Testimonios</a>
+                <a href="#contact">Contacto</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1>Apoyo Académico Profesional</h1>
+                <p>Contamos con profesionales cualificados en las diferentes áreas del conocimiento, para apoyarte en tu recorrido educativo, garantizarte resultados académicos de calidad.</p>
+                <p class="quote">"El esfuerzo que pones en tus estudios ahora, es la inversión en tu propio futuro"</p>
+                <a href="#contact" class="btn">Cotizar Ahora</a>
+            </div>
+            <div class="hero-image">
+                <img src="https://i.ibb.co/wZPMtKLS/Portada-2.png" alt="University Masters Portada">
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section (Detailed List with Drawings) -->
+    <section id="services">
+        <div class="container">
+            <h2 class="section-title">Nuestros Servicios</h2>
+            <p class="section-subtitle">Diseños y soluciones a tu medida</p>
+            
+            <!-- Old drawings grid hidden, repurposed images into detailed list -->
+            <div class="drawings-grid" style="display:none;">
+               <!-- Hidden content preserved just in case -->
+            </div>
+
+            <!-- Detailed Services List -->
+            <div class="services-text-list">
+                <!-- Exámenes Box -->
+                <div class="service-box">
+                    <img src="https://i.ibb.co/4Rjk2Fq1/Dibujo-2.png" alt="Ilustración Exámenes" class="box-icon">
+                    <h3>Exámenes</h3>
+                    <ul class="styled-list">
+                        <li><span class="icon">⏱️</span> Parciales</li>
+                        <li><span class="icon">⚡</span> Quices</li>
+                        <li><span class="icon">🎓</span> Exámenes de ingreso</li>
+                    </ul>
+                </div>
+
+                <!-- Trabajos Box -->
+                <div class="service-box">
+                    <img src="https://i.ibb.co/SwgYzY3Y/dibujo.png" alt="Ilustración Trabajos" class="box-icon">
+                    <h3>Trabajos</h3>
+                    <ul class="styled-list">
+                        <li><span class="icon">🛠️</span> Talleres</li>
+                        <li><span class="icon">📝</span> Reseñas</li>
+                        <li><span class="icon">🚀</span> Proyectos</li>
+                        <li><span class="icon">✍️</span> Ensayos</li>
+                        <li><span class="icon">📊</span> Infografías</li>
+                        <li><span class="icon">🤖</span> Informe de plagios y uso de IA</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Testimonials Section (Chats) -->
+    <section id="testimonials">
+        <div class="container">
+            <h2 class="section-title">Lo que dicen nuestros estudiantes</h2>
+            <p class="section-subtitle">Evidencia real de nuestros resultados</p>
+            
+            <div class="chat-gallery">
+                <div class="chat-item">
+                    <img src="https://i.ibb.co/PZNWhCQy/Captura-1.jpg" alt="Testimonio Chat 1">
+                </div>
+                <div class="chat-item">
+                    <img src="https://i.ibb.co/p6rZR95T/Captura2.jpg" alt="Testimonio Chat 2">
+                </div>
+                <div class="chat-item">
+                    <img src="https://i.ibb.co/kVkbjmKp/Captura-3.jpg" alt="Testimonio Chat 3">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ready to Start Section -->
+    <section id="ready">
+        <div class="container">
+            <h2 class="section-title">¿Listo para comenzar?</h2>
+            <p class="section-subtitle">Únete a miles de estudiantes que ya están alcanzando sus metas académicas con nuestra plataforma.</p>
+            
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-icon">1</div>
+                    <h3>Evaluación gratuita inicial</h3>
+                    <p>Determinamos tus necesidades específicas</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">2</div>
+                    <h3>Asesor personal asignado</h3>
+                    <p>Expertos en tu área de estudio</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">3</div>
+                    <h3>Comienza tu transformación</h3>
+                    <p>Alcanza tus objetivos académicos</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="#contact" class="btn">¡EMPEZAR AHORA!</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Contáctanos</h2>
+            <p class="section-subtitle">Estamos listos para ayudarte 24/7</p>
+
+            <!-- General Socials -->
+            <div class="social-grid">
+                <a href="#" class="social-icon" title="Facebook">
+                    <img src="https://i.ibb.co/tNBdWSQ/Facebook.png" alt="Facebook">
+                </a>
+                <a href="#" class="social-icon" title="Instagram">
+                    <img src="https://i.ibb.co/Q7kmDT2d/Instagam.png" alt="Instagram">
+                </a>
+                <a href="#" class="social-icon" title="LinkedIn">
+                    <img src="https://i.ibb.co/1f6PXhGp/Linkedin.png" alt="LinkedIn">
+                </a>
+            </div>
+
+            <!-- WhatsApp Specifics -->
+            <div class="whatsapp-section">
+                <h3>Contactar por WhatsApp</h3>
+                <div class="whatsapp-buttons">
+                    
+                    <!-- Button 1: Trabajos -->
+                    <a href="#" class="wa-btn">
+                        <img src="https://i.ibb.co/wrPqwgsv/Whats-app.png" alt="WhatsApp">
+                        <div class="wa-info">
+                            <strong>Trabajos Académicos</strong>
+                            <span>Cotizar ensayo/tesis</span>
+                        </div>
+                    </a>
+
+                    <!-- Button 2: Examenes -->
+                    <a href="#" class="wa-btn">
+                        <img src="https://i.ibb.co/wrPqwgsv/Whats-app.png" alt="WhatsApp">
+                        <div class="wa-info">
+                            <strong>Exámenes / Parciales</strong>
+                            <span>Agendar ayuda en vivo</span>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 University Masters. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Quality Seal (Fixed at bottom) -->
+    <div id="quality-seal">
+        <img src="https://i.ibb.co/d43gmh8P/Calidad.png" alt="Sello de Calidad y Garantía">
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu Toggle Logic
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        const links = document.querySelectorAll('.nav-links a');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            
+            // Change icon based on state
+            if(navLinks.classList.contains('active')) {
+                mobileMenuBtn.textContent = '✕';
+            } else {
+                mobileMenuBtn.textContent = '☰';
+            }
+        });
+
+        // Close menu when clicking a link
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.textContent = '☰';
+            });
+        });
+
+        // Smooth Scrolling for anchor links (Standard behavior enhancement)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
